@@ -3,8 +3,8 @@ File: WeaponsTacticsTraining.lua
 Author: Robert Klein
 Created: 8th August 2020, 11:50:09
 -----
-Last Modified: 16th July 2021, 10:45:31
-Modified By: Robert Klein
+Last Modified: 3rd September 2021, 09:54:49
+Modified By: kleiro
 //////////////////////////////////////////////////]]
 
 WTT = {}
@@ -12,6 +12,11 @@ WTT = {}
 --[[//////////////////////////////////////////////
 PVE Aircraft
 ////////////////////////////////////////////////]]
+
+--BFM Aircraft Spawn Functions
+WTT.BFMSpawns = SET_GROUP:New()
+WTT.BFMSpawns:FilterPrefixes("PVE_Red_BFM_")
+WTT.BFMSpawns:FilterStart()
 
 function SpawnBFMAircraft(_acType, _spawnCount)
     local _clientInZone = 0
@@ -32,6 +37,17 @@ function SpawnBFMAircraft(_acType, _spawnCount)
     end
 end
 
+function ClearBFMAircraft()
+    WTT.BFMSpawns:ForEachGroup(function(_group)
+        _group:Destroy(nil)
+    end)
+end
+
+--BVR Aircraft Spawn Functions
+WTT.BVRSpawns = SET_GROUP:New()
+WTT.BVRSpawns:FilterPrefixes("PVE_Red_BVR_")
+WTT.BVRSpawns:FilterStart()
+
 function SpawnBVRAircraft(_acType, _spawnCount)
     local _clientInZone = 0
     local _spawnZone = ZONE:FindByName("BVR Range")
@@ -51,14 +67,26 @@ function SpawnBVRAircraft(_acType, _spawnCount)
     end
 end
 
+function ClearBVRAircraft()
+    WTT.BVRSpawns:ForEachGroup(function(_group)
+        _group:Destroy(nil)
+    end)
+end
+
 WTT.clients = SET_CLIENT:New():FilterActive(true):FilterStart()
 
+--WTT Menu
 WTT.pveAC = {"F14", "F15", "F16", "F18", "F5", "MiG21", "MiG23", "MiG29", "MiG31", "Su27", "TU95"}
 
 WTT.menus = {}
 WTT.menus.main = MENU_COALITION:New(coalition.side.BLUE, "Spawn PVE Aircraft")
+
 WTT.menus.main.BVR = MENU_COALITION:New(coalition.side.BLUE, "BVR", WTT.menus.main)
+WTT.menus.main.ClearBVR = MENU_COALITION_COMMAND:New(coalition.side.BLUE, "Clear BVR Spawns", WTT.menus.main, ClearBVRAircraft)
+
 WTT.menus.main.BFM = MENU_COALITION:New(coalition.side.BLUE, "BFM", WTT.menus.main)
+WTT.menus.main.ClearBFM = MENU_COALITION_COMMAND:New(coalition.side.BLUE, "Clear BFM Spawns", WTT.menus.main, ClearBFMAircraft)
+
 WTT.menus.main.BVR.AC = {}
 WTT.menus.main.BFM.AC = {}
 

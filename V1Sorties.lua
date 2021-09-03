@@ -3,8 +3,8 @@ File: V1Sorties.lua
 Author: Robert Klein
 Created: 8th July 2021, 11:22:17
 -----
-Last Modified: 16th July 2021, 09:53:06
-Modified By: Robert Klein
+Last Modified: 3rd September 2021, 11:06:01
+Modified By: kleiro
 //////////////////////////////////////////////////]]
 
 --[[//////////////////////////////////////////////
@@ -17,7 +17,7 @@ Sorties.Groups = {}
 
 --Clear Sorties
 Sorties.Set = SET_GROUP:New()
-Sorties.Set:FilterPrefixes({"S2_", "S3_", "S4_", "S7_"})
+Sorties.Set:FilterPrefixes({"S2_", "S3_", "S4_", "S7_", "S8_"})
 Sorties.Set:FilterStart()
 
 function ClearSorties()
@@ -95,6 +95,15 @@ function StartSortieSeven()
 end
 
 --Sortie 8 QRA(I): No function needed, BFM Range built in to mission
+function StartSortieEight()
+    local _i = math.random(3)
+    local _prefix = "S8_F5-"
+
+    local _group = _prefix.._i
+
+    Sorties.Templates[_group] = SPAWN:New(_group)
+    Sorties.Templates[_group]:Spawn()
+end
 
 --[[//////////////////////////////////////////////
 Radio Menu
@@ -106,4 +115,5 @@ Sorties.Menus.Main.S2 = MENU_COALITION_COMMAND:New(coalition.side.BLUE, "2:A2G-S
 Sorties.Menus.Main.S3 = MENU_COALITION_COMMAND:New(coalition.side.BLUE, "3:A2G-Precision Interdiction", Sorties.Menus.Main, StartSortieThree)
 Sorties.Menus.Main.S4 = MENU_COALITION_COMMAND:New(coalition.side.BLUE, "4:A2G-SCAR", Sorties.Menus.Main, StartSortieFour)
 Sorties.Menus.Main.S7 = MENU_COALITION_COMMAND:New(coalition.side.BLUE, "7:A2S-ASuW", Sorties.Menus.Main, StartSortieSeven)
+Sorties.Menus.Main.S8 = MENU_COALITION_COMMAND:New(coalition.side.BLUE, "8:QRA(I)", Sorties.Menus.Main, StartSortieEight)
 Sorties.Menus.Main.Clear = MENU_COALITION_COMMAND:New(coalition.side.BLUE, "Clear Sorties", Sorties.Menus.Main, ClearSorties)
