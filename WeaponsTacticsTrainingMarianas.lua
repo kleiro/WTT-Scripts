@@ -3,7 +3,7 @@ File: WeaponsTacticsTraining.lua
 Author: Robert Klein
 Created: 8th August 2020, 11:50:09
 -----
-Last Modified: 3rd September 2021, 09:54:49
+Last Modified: 10th September 2021, 09:19:08
 Modified By: kleiro
 //////////////////////////////////////////////////]]
 
@@ -207,6 +207,8 @@ MOOSE CVN Airboss & Recovery Tanker
 WTT.recoveryTanker = RECOVERYTANKER:New(UNIT:FindByName("CVN-71"), "Arco")
 WTT.recoveryTanker:SetTakeoffAir()
 WTT.recoveryTanker:SetRespawnInAir()
+WTT.recoveryTanker:SetTACAN(39,"ARC")
+WTT.recoveryTanker:SetRadio(290, "AM")
 WTT.recoveryTanker:Start()
 
 WTT.rescueHelo = RESCUEHELO:New(UNIT:FindByName("CVN-71"), "Lifeguard")
