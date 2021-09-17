@@ -3,7 +3,7 @@ File: V1Sorties.lua
 Author: Robert Klein
 Created: 8th July 2021, 11:22:17
 -----
-Last Modified: 3rd September 2021, 11:06:01
+Last Modified: 17th September 2021, 13:29:24
 Modified By: kleiro
 //////////////////////////////////////////////////]]
 
@@ -94,10 +94,10 @@ function StartSortieSeven()
     end
 end
 
---Sortie 8 QRA(I): No function needed, BFM Range built in to mission
+--Sortie 8 QRA(I): Spawn single aircraft group randomly
 function StartSortieEight()
-    local _i = math.random(3)
-    local _prefix = "S8_F5-"
+    local _i = math.random(6)
+    local _prefix = "S8_"
 
     local _group = _prefix.._i
 
