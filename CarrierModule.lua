@@ -3,8 +3,8 @@ File: CarrierModule.lua
 Author: Robert Klein
 Created: 19th May 2021, 11:51:13
 -----
-Last Modified: 16th July 2021, 09:15:09
-Modified By: Robert Klein
+Last Modified: 20th September 2021, 08:53:45
+Modified By: kleiro
 //////////////////////////////////////////////////]]
 --REQUIRES global variable in Mission Editor
 --Carrier_Units = {"1st Carrier Unit Name", "2nd Carrier Unit Name", ...}
@@ -1028,7 +1028,7 @@ function TIG:_Groove(playerData)
     local rho=groovedata.Rho
     self:T(string.format("%s INFO: Rho-%i, Inzone-%s, Roll-%i, Vel-%i, XDist-%i", self.lid, rho, tostring(playerData.unit:IsInZone(self:_GetZoneLineup())), groovedata.Roll, groovedata.Vel, groovedata.X))
   
-    if (((rho<=RXX and math.abs(groovedata.Roll)<=4.0 and groovedata.Vel >=40 and groovedata.X <= 1000) or playerData.unit:IsInZone(self:_GetZoneLineup())) and playerData.TIG0 == nil) then
+    if ((rho<=RX0 and math.abs(groovedata.Roll)<=4.0 and groovedata.Vel >=40 and groovedata.Z <=350) and playerData.TIG0 == nil) then
         self:T(self.lid.."INFO: Starting groove timer")
         -- Start time in groove
         playerData.TIG0=timer.getTime()
@@ -1108,6 +1108,17 @@ BASE:HandleEvent(EVENTS.Land)
 function BASE:OnEventLand(EventData)
     if EventData.IniPlayerName then
         local _missionTime = UTILS.SecondsToClock(UTILS.SecondsOfToday(),true)
+
+        --If TOD is night, or clouds below 3,000 ft, or visibility less than 5NM, don't include TIG
+        local _landingPlaceCoordinate = UNIT:FindByName(EventData.PlaceName):GetCoordinate()
+        local _isDay = _landingPlaceCoordinate:IsDay()
+
+        local _cloudBase = UTILS.MetersToFeet(env.mission.weather.clouds.base)
+        local _visibility = UTILS.MetersToNM(env.mission.weather.visibility.distance)
+        
+        if not ((_cloudBase >= 3000) and (_visibility >= 5) and _isDay) then
+            CVNTIG[EventData.PlaceName].players[EventData.IniPlayerName].Tgroove = nil
+        end
         
         TIMER:New(function(EventData, _missionTime)
             local _playerTIG = CVNTIG[EventData.PlaceName].players[EventData.IniPlayerName].Tgroove
