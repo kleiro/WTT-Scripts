@@ -3,8 +3,8 @@ File: CarrierModule.lua
 Author: Robert Klein
 Created: 19th May 2021, 11:51:13
 -----
-Last Modified: 20th September 2021, 08:53:45
-Modified By: kleiro
+Last Modified: 13th October 2021, 18:25:30
+Modified By: Robert Klein
 //////////////////////////////////////////////////]]
 --REQUIRES global variable in Mission Editor
 --Carrier_Units = {"1st Carrier Unit Name", "2nd Carrier Unit Name", ...}
@@ -1028,7 +1028,7 @@ function TIG:_Groove(playerData)
     local rho=groovedata.Rho
     self:T(string.format("%s INFO: Rho-%i, Inzone-%s, Roll-%i, Vel-%i, XDist-%i", self.lid, rho, tostring(playerData.unit:IsInZone(self:_GetZoneLineup())), groovedata.Roll, groovedata.Vel, groovedata.X))
   
-    if ((rho<=RX0 and math.abs(groovedata.Roll)<=4.0 and groovedata.Vel >=40 and groovedata.Z <=350) and playerData.TIG0 == nil) then
+    if ((playerData.unit:IsInZone(self:_GetZoneLineup()) and rho<=RX0 and math.abs(groovedata.Roll)<=4.0 and groovedata.Vel >=40) and playerData.TIG0 == nil) then
         self:T(self.lid.."INFO: Starting groove timer")
         -- Start time in groove
         playerData.TIG0=timer.getTime()
