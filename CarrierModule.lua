@@ -3,7 +3,7 @@ File: CarrierModule.lua
 Author: Robert Klein
 Created: 19th May 2021, 11:51:13
 -----
-Last Modified: 13th October 2021, 18:25:30
+Last Modified: 14th October 2021, 08:19:17
 Modified By: Robert Klein
 //////////////////////////////////////////////////]]
 --REQUIRES global variable in Mission Editor
@@ -997,6 +997,7 @@ function TIG:_GetGrooveData(playerData)
     groovedata.Roll=playerData.unit:GetRoll()
     groovedata.Pitch=playerData.unit:GetPitch()
     groovedata.Yaw=playerData.unit:GetYaw()
+    groovedata.Height=playerData.unit:GetHeight()
     groovedata.Vel=UTILS.VecNorm(vel)
     groovedata.Vy=vel.y
 
@@ -1012,6 +1013,7 @@ function TIG:_Groove(playerData)
     self:T(self.lid.."INFO: Running _Groove")
     -- Ranges in the groove.
     local RX2=UTILS.NMToMeters(2.500)
+    local RX1=UTILS.NMToMeters(1.500)
     local RX0=UTILS.NMToMeters(1.000) -- Everything before X    1.00  = 1852 m
     local RXX=UTILS.NMToMeters(0.750) -- Start of groove.       0.75  = 1389 m
     local RIM=UTILS.NMToMeters(0.500) -- In the Middle          0.50  =  926 m (middle one third of the glideslope)
@@ -1026,9 +1028,9 @@ function TIG:_Groove(playerData)
   
     -- Shortcuts.
     local rho=groovedata.Rho
-    self:T(string.format("%s INFO: Rho-%i, Inzone-%s, Roll-%i, Vel-%i, XDist-%i", self.lid, rho, tostring(playerData.unit:IsInZone(self:_GetZoneLineup())), groovedata.Roll, groovedata.Vel, groovedata.X))
+    self:T(string.format("%s INFO: Rho-%i, Inzone-%s, Roll-%i, Vel-%i, XDist-%i", self.lid, rho, tostring(playerData.unit:IsInZone(self:_GetZoneGroove())), groovedata.Roll, groovedata.Vel, groovedata.X))
   
-    if ((playerData.unit:IsInZone(self:_GetZoneLineup()) and rho<=RX0 and math.abs(groovedata.Roll)<=4.0 and groovedata.Vel >=40) and playerData.TIG0 == nil) then
+    if (playerData.unit:IsInZone(self:_GetZoneGroove()) and groovedata.Height<=190 and math.abs(groovedata.Roll)<=4.0 and groovedata.Vel >=40 and groovedata.Vel <= 460) and playerData.TIG0 == nil then
         self:T(self.lid.."INFO: Starting groove timer")
         -- Start time in groove
         playerData.TIG0=timer.getTime()
