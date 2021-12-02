@@ -3,7 +3,7 @@ File: CarrierModule.lua
 Author: Robert Klein
 Created: 19th May 2021, 11:51:13
 -----
-Last Modified: 14th October 2021, 08:19:17
+Last Modified: 27th October 2021, 14:34:01
 Modified By: Robert Klein
 //////////////////////////////////////////////////]]
 --REQUIRES global variable in Mission Editor
@@ -13,6 +13,7 @@ Modified By: Robert Klein
 --Variable Definitions
 CVNGroups = {}
 CVNTIG = {}
+CVNTIG.PlayerCaseType = 1
 
 --Function Definitiions
 function TurnIntoWind(_navyGroup, _time)
@@ -48,6 +49,11 @@ function AddTurninIntoWindMenu(_navyGroup)
         _navyGroup.TurnIntoWindCommand90 = MENU_COALITION_COMMAND:New(_navyGroup:GetCoalition(), "90 Minutes", _navyGroup.TurnIntoWindMenu, TurnIntoWind, _navyGroup, 90)
         _navyGroup.TurnIntoWindCommand120 = MENU_COALITION_COMMAND:New(_navyGroup:GetCoalition(), "120 Minutes", _navyGroup.TurnIntoWindMenu, TurnIntoWind, _navyGroup, 120)
     
+end
+
+function SetCaseType(_case, _navyGroup)
+    CVNTIG.PlayerCaseType = _case
+    MESSAGE:New(string.format("Grading switched to CASE %i", _case)):ToCoalition(_navyGroup:GetCoalition())
 end
 
 
@@ -1086,6 +1092,10 @@ for k, unitName in pairs(Carrier_Units) do
     CVNGroups[groupName] = NAVYGROUP:New(groupName)
     CVNGroups[groupName].TopMenu = MENU_COALITION:New(CVNGroups[groupName]:GetCoalition(), string.format("%s Menu", unitName))
     AddTurninIntoWindMenu(CVNGroups[groupName])
+
+    CVNGroups[groupName].TopMenu.CaseType = MENU_COALITION:New(CVNGroups[groupName]:GetCoalition(), "Set CASE Type", CVNGroups[groupName].TopMenu)
+    MENU_COALITION_COMMAND:New(CVNGroups[groupName]:GetCoalition(), "CASE I & II", CVNGroups[groupName].TopMenu.CaseType, SetCaseType, 1, CVNGroups[groupName])
+    MENU_COALITION_COMMAND:New(CVNGroups[groupName]:GetCoalition(), "CASE III", CVNGroups[groupName].TopMenu.CaseType, SetCaseType, 3, CVNGroups[groupName])
     
     local _tempNavyGroup = CVNGroups[groupName]
 
@@ -1111,22 +1121,27 @@ function BASE:OnEventLand(EventData)
     if EventData.IniPlayerName then
         local _missionTime = UTILS.SecondsToClock(UTILS.SecondsOfToday(),true)
 
-        --If TOD is night, or clouds below 3,000 ft, or visibility less than 5NM, don't include TIG
-        local _landingPlaceCoordinate = UNIT:FindByName(EventData.PlaceName):GetCoordinate()
-        local _isDay = _landingPlaceCoordinate:IsDay()
-
-        local _cloudBase = UTILS.MetersToFeet(env.mission.weather.clouds.base)
-        local _visibility = UTILS.MetersToNM(env.mission.weather.visibility.distance)
+        --If a player has set case type to III, don't include TIG
         
-        if not ((_cloudBase >= 3000) and (_visibility >= 5) and _isDay) then
-            CVNTIG[EventData.PlaceName].players[EventData.IniPlayerName].Tgroove = nil
+        if CVNTIG.PlayerCaseType == 3 then
+
+            TIMER:New(function(EventData, _missionTime)
+                local _playerTIG = nil
+                local _outputString = string.format("Landing_Data | UnitType:%s,Player-Name:%s,Place:%s,TIG:%i,MissionTime:%s", EventData.IniTypeName, EventData.IniPlayerName, EventData.PlaceName, _playerTIG, _missionTime)
+                BASE:E(_outputString)
+            end, EventData, _missionTime):Start(5)
+
+        else
+
+            TIMER:New(function(EventData, _missionTime)
+                local _playerTIG = CVNTIG[EventData.PlaceName].players[EventData.IniPlayerName].Tgroove
+                local _outputString = string.format("Landing_Data | UnitType:%s,Player-Name:%s,Place:%s,TIG:%i,MissionTime:%s", EventData.IniTypeName, EventData.IniPlayerName, EventData.PlaceName, _playerTIG, _missionTime)
+                BASE:E(_outputString)
+            end, EventData, _missionTime):Start(5)
+            
         end
         
-        TIMER:New(function(EventData, _missionTime)
-            local _playerTIG = CVNTIG[EventData.PlaceName].players[EventData.IniPlayerName].Tgroove
-            local _outputString = string.format("Landing_Data | UnitType:%s,Player-Name:%s,Place:%s,TIG:%i,MissionTime:%s", EventData.IniTypeName, EventData.IniPlayerName, EventData.PlaceName, _playerTIG, _missionTime)
-            BASE:E(_outputString)
-        end, EventData, _missionTime):Start(5)
+        
 
     end
 end
