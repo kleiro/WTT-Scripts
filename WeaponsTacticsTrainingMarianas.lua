@@ -3,13 +3,8 @@ File: WeaponsTacticsTraining.lua
 Author: Robert Klein
 Created: 8th August 2020, 11:50:09
 -----
-<<<<<<< Updated upstream
-Last Modified: 10th September 2021, 09:19:08
-Modified By: kleiro
-=======
 Last Modified: 11th November 2021, 09:28:12
 Modified By: Robert Klein
->>>>>>> Stashed changes
 //////////////////////////////////////////////////]]
 
 WTT = {}
@@ -186,31 +181,6 @@ WTT.menus.awacs.on = MENU_COALITION_COMMAND:New(coalition.side.BLUE, "Enable AWA
 --[[//////////////////////////////////////////////
 MOOSE CVN Airboss & Recovery Tanker
 ////////////////////////////////////////////////]]
-<<<<<<< Updated upstream
-
---WTT.airboss = AIRBOSS:New("CVN-71","CVN Roosevelt")
---WTT.airboss:SetAutoSave([[C:\Users\DCAF\Google Drive (dcafoc@gmail.com)\DCAF\2_Establishment\Carrier Grades]])
---WTT.airboss:Load([[C:\Users\DCAF\Google Drive (dcafoc@gmail.com)\DCAF\2_Establishment\Carrier Grades]])
---WTT.airboss:SetTrapSheet()
---WTT.airboss:SetGlideslopeErrorThresholds(0.5, -0.4, 0.9, 1.6, -0.6, -0.9)
---WTT.airboss:SetLineupErrorThresholds(0.75, -0.75, -1.75, -3.0, 1.75, 3.0)
---WTT.airboss:SetSoundfilesFolder("Airboss Soundfiles/")
---WTT.airboss:SetVoiceOversLSOByRaynor()
---WTT.airboss:SetVoiceOversMarshalByGabriella()
---WTT.airboss:SetRadioRelayLSO("LSOVO")
---WTT.airboss:SetRadioRelayMarshal("MSHLVO")
---WTT.airboss:SetDefaultPlayerSkill("Naval Aviator")
---WTT.airboss:SetMaxLandingPattern(6)
---WTT.airboss:Start()
---WTT.airboss:SetTACAN(71, "X", "CVN")
---WTT.airboss:SetICLS(1, "ICV")
---WTT.airboss:SetMarshalRadio(305.00, "AM")
---WTT.airboss:SetLSORadio(305.10, "AM")
---WTT.airboss:SetCollisionDistance(15)
---WTT.airboss:SetMenuRecovery(60, 27, true, 0)
---WTT.airboss:CarrierTurnIntoWind(21600, UTILS.KnotsToMps(30))
-
-=======
 --[[
 BASE:TraceOnOff(true)
 BASE:TraceLevel(3)
@@ -237,7 +207,6 @@ WTT.airboss:SetCollisionDistance(30)
 WTT.airboss:SetMenuRecovery(60, 25, true, 0)
 WTT.airboss:Start()
 ]]
->>>>>>> Stashed changes
 WTT.recoveryTanker = RECOVERYTANKER:New(UNIT:FindByName("CVN-71"), "Arco")
 WTT.recoveryTanker:SetCallsign(CALLSIGN.Tanker.Arco, 1)
 WTT.recoveryTanker:SetTakeoffAir()
@@ -256,18 +225,11 @@ WTT.rescueHelo:Start()
 --[[//////////////////////////////////////////////
 MOOSE LHA Airboss
 ////////////////////////////////////////////////]]
-<<<<<<< Updated upstream
---WTT.airbossLHA = AIRBOSS:New("LHA-1","LHA Tarawa")
---WTT.airbossLHA:SetAutoSave([[C:\Users\DCAF\Google Drive (dcafoc@gmail.com)\DCAF\2_Establishment\Carrier Grades]])
---WTT.airbossLHA:Load([[C:\Users\DCAF\Google Drive (dcafoc@gmail.com)\DCAF\2_Establishment\Carrier Grades]])
---[[WTT.airbossLHA:SetTrapSheet()
-=======
 WTT.airbossLHA = AIRBOSS:New("LHA-1","LHA Tarawa")
 WTT.airbossLHA:SetAutoSave([[C:\Users\DCAF\Google Drive\Carrier Greenie Board]])
 WTT.airbossLHA:Load([[C:\Users\DCAF\Google Drive\Carrier Greenie Board]])
 
 --WTT.airbossLHA:SetTrapSheet()
->>>>>>> Stashed changes
 WTT.airbossLHA:SetGlideslopeErrorThresholds(0.5, -0.4, 0.9, 1.6, -0.7, -1.0)
 WTT.airbossLHA:SetLineupErrorThresholds(0.75, -0.75, -1.75, -3.0, 1.75, 3.0)
 WTT.airbossLHA:SetSoundfilesFolder("Airboss Soundfiles/")
@@ -281,11 +243,6 @@ WTT.airbossLHA:Start()
 WTT.airbossLHA:SetTACAN(73, "X", "LHA")
 WTT.airbossLHA:SetICLS(3, "ILH")
 WTT.airbossLHA:SetMarshalRadio(305.10, "AM")
-<<<<<<< Updated upstream
-WTT.airbossLHA:SetLSORadio(305.20, "AM")
-WTT.airbossLHA:SetCollisionDistance(15)
-WTT.airbossLHA:SetMenuRecovery(60, 27, true, 0)]]
-=======
 WTT.airbossLHA:SetLSORadio(305.15, "AM")
 WTT.airbossLHA:SetCollisionDistance(30)
 WTT.airbossLHA:SetMenuRecovery(60, 13, true, 0)
@@ -298,4 +255,3 @@ WTT.LHArecoveryTanker:SetRespawnInAir()
 WTT.LHArecoveryTanker:SetTACAN(49,"LAC")
 WTT.LHArecoveryTanker:SetRadio(291, "AM")
 WTT.LHArecoveryTanker:Start()
->>>>>>> Stashed changes
